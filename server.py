@@ -15,24 +15,24 @@ db = redis.Redis('localhost')
 @app.route('/load/<token>', methods = ['POST'])
 @cross_origin()
 def load_csv(token):
-    data = json.dumps(request.get_json())
-    db.getset(token, data)
+    init = request.get_json()
+    r = Report(init['csv'], init['boy'])
+    
+    db.set(token, pickle.dumps(r))
 
-    return db.get(token)
+    return json.dumps({ "stocks": r.stocks() });
 
 
 @app.route('/txin/<token>', methods = ['POST'])
 @cross_origin()
 def load_txin(token):
-    init = json.loads(db.get(token))
+    r = pickle.loads(db.get(token))
     txns = request.get_json()['txin']
-
-    r = Report(init['csv'], init['boy'])
     to_reval = r.run(txns)
 
     db.set(token, pickle.dumps(r))
 
-    return json.dumps({"to_reval": to_reval})
+    return json.dumps({ "to_reval": to_reval })
 
 
 @app.route('/reval/<token>', methods = ['POST'])
@@ -42,6 +42,6 @@ def reval(token):
     data = request.get_json()['reval']
     result = r.reval(data)
 
-    return json.dumps({"result": result})
+    return json.dumps({ "result": result })
 
 

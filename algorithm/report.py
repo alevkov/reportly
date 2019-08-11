@@ -94,8 +94,8 @@ class Report(object):
 
     def run(self, txns):
         for t in txns:
-            heapq.heappush(self.__txin, Txn(t['name'], t['type'], t['price'], \
-            t['amount'], self.__str_to_date(t['ts'])))
+            heapq.heappush(self.__txin, Txn(t['name'], int(t['type']), float(t['price']), \
+            float(t['amount']), self.__str_to_date(t['ts'])))
 
         self.__while_no_error(self.__run, IndexError);
 
@@ -113,3 +113,7 @@ class Report(object):
                 heapq.heappush(self.__txout, aqn)
 
         return [str(heapq.heappop(self.__txout)) for i in range(len(self.__txout))]
+
+
+    def stocks(self):
+        return [row[0] for row in self.__stock.itertuples(index=True)]
