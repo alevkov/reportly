@@ -22,8 +22,6 @@ class Report(object):
         self.__stock = pd.read_csv(StringIO(csv))
         self.__stock.set_index('name', inplace=True)
 
-        print(self.__stock)
-
         date = self.__str_to_date(boy)
         for row in self.__stock.itertuples(index=True):
             name = row[0]
