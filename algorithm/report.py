@@ -11,7 +11,7 @@ class Report(object):
 
     def __init__(self, csv, boy):
         super(Report, self).__init__()
-
+        
         self.__initialize(csv, boy)
 
 
@@ -23,11 +23,11 @@ class Report(object):
         self.__stock.set_index('name', inplace=True)
 
         date = self.__str_to_date(boy)
+
         for row in self.__stock.itertuples(index=True):
             name = row[0]
             price = row[1]
             amount = row[2]
-            
             self.__aqmap[name] = collections.deque([])
             self.__aqmap[name].append(Txn(name, 0, price, amount, date))
 
@@ -48,8 +48,8 @@ class Report(object):
             self.__aqmap[txn.name].append(txn)
         else:
             while n > 0:
-                # if qmap[txn.name].empty():
-                #   raise Exception('Underflow. Sold more than owned.')
+                if len(self.__aqmap[txn.name]) is 0:
+                    raise Exception('Underflow. Sold more than owned.')
 
                 if n <= self.__aqmap[txn.name][-1].amount: # txn amount is less than topmost amount
                     sold = txn
@@ -100,6 +100,7 @@ class Report(object):
         self.__while_no_error(self.__run, IndexError);
 
         return [row[0] for row in self.__stock.itertuples(index=True) if len(self.__aqmap[row[0]]) > 0]
+
 
     def reval(self, reval):
         for row in self.__stock.itertuples(index=True):
