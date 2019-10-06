@@ -1,1 +1,1 @@
-web: gunicorn reportly:reportly
+web: gunicorn server:reportly
