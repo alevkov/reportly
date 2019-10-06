@@ -7,10 +7,12 @@ import redis
 import json
 import pickle
 import os
+import urlparse
 
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+url = urlparse.urlparse(os.environ.get('REDISTOGO_URL', 'redis://localhost'))
 db = redis.Redis(host=url.hostname, port=url.port, db=0, password=url.password)
 
 @app.route('/load/<token>', methods = ['POST'])
