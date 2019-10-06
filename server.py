@@ -9,10 +9,9 @@ import pickle
 import os
 
 app = Flask(__name__)
-print(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-db = redis.Redis(os.environ['REDISTOGO_URL'])
+db = redis.Redis(host=url.hostname, port=url.port, db=0, password=url.password)
 
 @app.route('/load/<token>', methods = ['POST'])
 @cross_origin()
