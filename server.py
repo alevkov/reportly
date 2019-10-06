@@ -6,12 +6,13 @@ from flask_cors import CORS, cross_origin
 import redis
 import json
 import pickle
+import os
 
 app = Flask(__name__)
 print(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-db = redis.Redis('localhost')
+db = redis.Redis(os.environ['REDISTOGO_URL'])
 
 @app.route('/load/<token>', methods = ['POST'])
 @cross_origin()
