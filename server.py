@@ -2,12 +2,12 @@ from algorithm.report import Report
 from flask import Flask
 from flask import request
 from flask_cors import CORS, cross_origin
+from urllib.parse import urlparse
 
 import redis
 import json
 import pickle
 import os
-import urlparse
 
 app = Flask(__name__)
 cors = CORS(app)
