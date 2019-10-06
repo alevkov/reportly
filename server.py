@@ -8,6 +8,7 @@ import json
 import pickle
 
 app = Flask(__name__)
+print(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 db = redis.Redis('localhost')
