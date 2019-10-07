@@ -19,11 +19,9 @@ db = redis.Redis(host=url.hostname, port=url.port, db=0, password=url.password)
 @cross_origin()
 def load_csv(token):
     init = request.get_json()
-    print(init)
     r = Report(init['csv'], init['boy'])
     db.set(token, pickle.dumps(r))
     r = pickle.loads(db.get(token))
-    print(dir(r))
 
     return json.dumps({ "stocks": r.stocks() });
 
@@ -32,12 +30,9 @@ def load_csv(token):
 @cross_origin()
 def load_txin(token):
     r = pickle.loads(db.get(token))
-    print(dir(r))
     txns = request.get_json()['txin']
-    print(txns)
     r.reset()
     to_reval = r.run(txns)
-
     db.set(token, pickle.dumps(r))
 
     return json.dumps({ "to_reval": to_reval })
@@ -47,7 +42,6 @@ def load_txin(token):
 @cross_origin()
 def reval(token):
     r = pickle.loads(db.get(token))
-    print(request.get_json())
     data = request.get_json()['reval']
     result = r.reval(data)
 
